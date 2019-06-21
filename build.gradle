@@ -1,0 +1,44 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:2.1.3.RELEASE")
+    }
+}
+
+plugins {
+    id 'idea'
+    id 'java'
+    id 'application'
+}
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation('org.springframework.boot:spring-boot-starter-web:2.1.3.RELEASE') {
+        exclude(module: 'spring-boot-starter-tomcat')
+    }
+    implementation 'org.springframework.boot:spring-boot-starter-cache:2.1.3.RELEASE'
+    implementation 'org.springframework.boot:spring-boot-starter-undertow:2.1.3.RELEASE'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator:2.1.3.RELEASE'
+    implementation 'org.springframework.boot:spring-boot-starter-data-cassandra:1.5.7.RELEASE'
+
+    implementation 'org.apache.ignite:ignite-indexing:2.7.0'
+    implementation 'org.apache.ignite:ignite-spring:2.7.0'
+    implementation 'org.apache.ignite:ignite-kubernetes:2.7.0'
+    implementation 'org.apache.ignite:ignite-cassandra-store:2.4.0'
+    implementation 'org.apache.ignite:ignite-log4j:2.4.0'
+    implementation 'commons-io:commons-io:2.6'
+
+}
+
+task runIgnite(dependsOn:jar) << {
+    javaexec { main="-jar"; args jar.archivePath }
+}
+
+mainClassName = 'testIgnite.App'
